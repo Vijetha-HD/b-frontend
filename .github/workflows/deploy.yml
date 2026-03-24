@@ -27,17 +27,19 @@ jobs:
       - name: 🏗️ Build app
         run: npm run build
 
-      # 🔥 CLEAN OLD FILES
-      - name: 🧹 Clean EC2 folder
+      # 🔥 FIX PERMISSIONS + CLEAN (IMPORTANT)
+      - name: 🧹 Clean & Fix Permissions on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            rm -rf /home/ubuntu/b-frontend/brightLaptopAdmin-main/*
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/b-frontend
+            sudo chmod -R 755 /home/ubuntu/b-frontend
+            sudo rm -rf /home/ubuntu/b-frontend/brightLaptopAdmin-main/*
 
-      # 🚀 DEPLOY NEW FILES
+      # 🚀 DEPLOY FILES
       - name: 📂 Upload dist
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -49,12 +51,14 @@ jobs:
           strip_components: 1
           overwrite: true
 
-      # 🔁 RELOAD NGINX (IMPORTANT)
-      - name: 🔁 Reload Nginx
+      # 🔁 FIX NGINX ACCESS + RESTART
+      - name: 🔁 Fix Nginx Permission & Restart
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            sudo systemctl reload nginx
+            sudo chown -R www-data:www-data /home/ubuntu/b-frontend
+            sudo chmod -R 755 /home/ubuntu/b-frontend
+            sudo systemctl restart nginx
