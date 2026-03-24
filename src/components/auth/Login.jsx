@@ -10,7 +10,7 @@ const Login = ({ handleLogin, loginForm, setLoginForm, showPassword, setShowPass
                         <div className="bg-blue-600 p-2.5 rounded-2xl shadow-lg shadow-blue-100"><Laptop className="text-white" size={28} /></div>
                         <span className="text-2xl font-black text-blue-900 tracking-tight">Brright<span className="text-blue-500 italic">Laptop</span></span>
                     </div>
-                    <h2 className="text-3xl font-black text-slate-800 leading-tight">Adminn Gateway</h2>
+                    <h2 className="text-3xl font-black text-slate-800 leading-tight">Admin Gateway</h2>
                     <p className="text-slate-400 font-bold text-xs mt-2 uppercase tracking-widest">Authorized Personnel Only</p>
                     <form onSubmit={handleLogin} className="mt-12 space-y-6">
                         <div className="space-y-2">
